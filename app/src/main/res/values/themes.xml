@@ -13,4 +13,18 @@
     <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     <!-- Customize your theme here. -->
   </style>
+
+  <style name="Button.White" parent="ThemeOverlay.AppCompat">
+  <item name="colorAccent">@android:color/white</item>
+  <item name="backgroundTint">@android:color/white</item>
+  <item name="strokeColor">#454545</item>
+  <item name="android:text">Sign up with Google</item>
+  <item name="strokeWidth">0.1dp</item>
+  <item name="android:textColor">@android:color/black</item>
+  <item name="android:textAllCaps">false</item>
+  <item name="android:letterSpacing">-0.02</item>
+  <item name="cornerRadius">12dp</item>
+  <item name="minHeight">45dp</item>
+  <item name="minWidth">200dp</item>
+</style>
 </resources>
