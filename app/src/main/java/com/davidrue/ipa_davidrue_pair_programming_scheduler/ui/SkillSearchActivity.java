@@ -1,37 +1,25 @@
 package com.davidrue.ipa_davidrue_pair_programming_scheduler.ui;
 
-import android.util.Log;
-import android.widget.AdapterView;
+import android.content.Intent;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.R;
-import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.SkillsApiController;
+import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.SkillsAndExpertsApiController;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.databinding.ActivitySkillSearchBinding;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.Skill;
-import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.SkillsArrayCallback;
-import com.google.android.material.button.MaterialButton;
+import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.callbacks.SkillsListCallback;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import java.io.IOException;
-import java.nio.file.StandardWatchEventKinds;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class SkillSearchActivity extends AppCompatActivity {
-  private final SkillsApiController skillsApiController = SkillsApiController.initialize(this);
-  private AutoCompleteTextView autoCompleteTextView;
+  private final SkillsAndExpertsApiController skillsAndExpertsApiController = SkillsAndExpertsApiController.initialize(this);
   private List<Skill> selectedSkills = new ArrayList<>();
   private ActivitySkillSearchBinding binding;
 
@@ -40,14 +28,14 @@ public class SkillSearchActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     binding = ActivitySkillSearchBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
-
+    updateSearchButton();
     setUpSkillSearch();
-
+    binding.searchExpertsButton.setOnClickListener(search -> searchExperts());
 
   }
 
   private void setUpSkillSearch(){
-    skillsApiController.getSkills(this, new SkillsArrayCallback() {
+    skillsAndExpertsApiController.getSkills(this, new SkillsListCallback() {
       @Override
       public void onSuccess(List<Skill> skillsResponse) {
         initializeAdapter(skillsResponse);
@@ -60,15 +48,19 @@ public class SkillSearchActivity extends AppCompatActivity {
   }
 
   private void initializeAdapter(List<Skill> skills){
-    List<String> skillsAsString = skills.stream().map(Skill::getName).collect(Collectors.toList());
+    List<String> skillsAsString = skills.stream().map(Skill::getName).sorted().collect(Collectors.toList());
     ArrayAdapter adapter = new ArrayAdapter(this, R.layout.item_drop_down, skillsAsString);
     binding.autoCompleteSkills.setAdapter(adapter);
     binding.autoCompleteSkills.setOnItemClickListener((parent, view, position, id) -> {
       String selectedSkill = (String) parent.getItemAtPosition(position);
       if (selectedSkills.contains(findSkill(selectedSkill, skills))) {
-        Toast.makeText(this, "You have already selected that skill :)", Toast.LENGTH_SHORT).show();
-      } else {
+        Toast.makeText(this, "You have already selected this skill :)", Toast.LENGTH_LONG).show();
+      } else if (selectedSkills.size() >= 10){
+        Toast.makeText(this, "Please do not select more than 10 skills", Toast.LENGTH_LONG).show();
+      }
+      else {
         addSkillChip(selectedSkill, skills);
+        binding.autoCompleteSkills.setText("");
       }
 
     });
@@ -77,6 +69,7 @@ public class SkillSearchActivity extends AppCompatActivity {
   private void addSkillChip(String selectedSkill, List<Skill> skills){
     Skill matchingSkill = findSkill(selectedSkill, skills);
     selectedSkills.add(matchingSkill);
+    updateSearchButton();
     binding.chipGroup.addView(getChip(matchingSkill));
   }
 
@@ -84,10 +77,10 @@ public class SkillSearchActivity extends AppCompatActivity {
     Chip chip = new Chip(this);
     chip.setText(skill.getName());
     chip.setCloseIconVisible(true);
-
     chip.setOnCloseIconClickListener(chippy -> {
       ((ChipGroup) chippy.getParent()).removeView(chippy);
       selectedSkills.remove(skill);
+      updateSearchButton();
     });
 
     return chip;
@@ -109,4 +102,18 @@ public class SkillSearchActivity extends AppCompatActivity {
     return null;
   }
 
+  private void updateSearchButton(){
+    binding.searchExpertsButton.setEnabled(selectedSkills.size() > 0);
+    binding.searchExpertsButton.setClickable(selectedSkills.size() > 0);
+  }
+
+  private void searchExperts(){
+    if(!selectedSkills.isEmpty()){
+      Intent intent = new Intent(SkillSearchActivity.this, ExpertsActivity.class);
+      intent.putParcelableArrayListExtra("SKILLS", new ArrayList<>(selectedSkills));
+      startActivity(intent);
+    }else{
+      Toast.makeText(this, "I do not understand how you got here :(", Toast.LENGTH_LONG).show();
+    }
+  }
 }

@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.SkillSearchActivity">
 
+  <Button
+      android:id="@+id/searchExpertsButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="100dp"
+      android:layout_marginStart="122dp"
+      android:layout_marginEnd="122dp"
+      android:textAlignment="gravity"
+      android:text="Search Experts"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent" />
   <com.google.android.material.textfield.TextInputLayout
 
       android:id="@+id/skillsSearch"
@@ -15,7 +28,6 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="20dp"
       android:layout_marginStart="12dp"
-
       android:layout_marginEnd="12dp"
       android:hint="Select some skills"
       android:text="Select some skills"

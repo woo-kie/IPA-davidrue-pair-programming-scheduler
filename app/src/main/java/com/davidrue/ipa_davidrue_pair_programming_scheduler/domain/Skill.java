@@ -1,27 +1,50 @@
 package com.davidrue.ipa_davidrue_pair_programming_scheduler.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Skill {
-  private int ID;
-
+public class Skill implements Parcelable {
+  private int id;
   private String name;
-  private SkillType type;
+  private String type;
   private List<Integer> users;
 
-  public Skill(int ID, String name, SkillType type, List<Integer> users) {
-    this.ID = ID;
+  public Skill(int id, String name, String type, List<Integer> users) {
+    this.id = id;
     this.name = name;
     this.type = type;
     this.users = users;
   }
 
-  public int getID() {
-    return ID;
+  protected Skill(Parcel in) {
+    id = in.readInt();
+    name = in.readString();
+    type = in.readString();
+    users = new ArrayList<>();
+    in.readList(users, Integer.class.getClassLoader());
   }
 
-  public void setID(int ID) {
-    this.ID = ID;
+  public static final Creator<Skill> CREATOR = new Creator<Skill>() {
+    @Override
+    public Skill createFromParcel(Parcel in) {
+      return new Skill(in);
+    }
+
+    @Override
+    public Skill[] newArray(int size) {
+      return new Skill[size];
+    }
+  };
+
+  public int getID() {
+    return id;
+  }
+
+  public void setID(int id) {
+    this.id = id;
   }
 
   public String getName() {
@@ -32,11 +55,11 @@ public class Skill {
     this.name = name;
   }
 
-  public SkillType getType() {
+  public String getType() {
     return type;
   }
 
-  public void setType(SkillType type) {
+  public void setType(String type) {
     this.type = type;
   }
 
@@ -47,11 +70,17 @@ public class Skill {
   public void setUsers(List<Integer> users) {
     this.users = users;
   }
-}
 
-enum SkillType {
-  SOFT,
-  LEAD,
-  SPECIALITY
-}
+  @Override
+  public int describeContents() {
+    return 0;
+  }
 
+  @Override
+  public void writeToParcel(Parcel parcel, int i) {
+    parcel.writeInt(id);
+    parcel.writeString(name);
+    parcel.writeString(type);
+    parcel.writeList(users);
+  }
+}
