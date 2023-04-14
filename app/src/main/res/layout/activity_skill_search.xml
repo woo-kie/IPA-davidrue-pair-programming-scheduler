@@ -8,22 +8,51 @@
     android:foregroundTint="#FFFFFF"
     tools:context=".ui.SkillSearchActivity">
 
+  <TextView
+      android:id="@+id/selectSkillsTitle"
+      style="@style/TextAppearance.Material3.DisplayMedium"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="92dp"
+      android:fontFamily="@font/roboto"
+      android:text="@string/select_skills_title"
+      android:textColor="@color/black"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+      android:id="@+id/findExpertText"
+      style="@style/TextAppearance.Material3.BodyLarge"
+      android:layout_width="match_parent"
+      android:layout_height="45dp"
+      android:layout_marginTop="12dp"
+      android:layout_marginStart="70dp"
+      android:layout_marginEnd="70dp"
+      android:minLines="2"
+      android:text="@string/selectSkills_welcome"
+      android:textAlignment="center"
+      app:layout_constraintBottom_toTopOf="@+id/btn_login"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/selectSkillsTitle" />
+
   <com.google.android.material.button.MaterialButton
-      style="@style/MaterialButtonStyle"
       android:id="@+id/searchExpertsButton"
+      style="@style/MaterialButtonStyle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="84dp"
       android:layout_marginStart="122dp"
       android:layout_marginEnd="122dp"
-      android:text="Search Experts"
+      android:text="@string/skillSearch_search_experts"
       android:textAlignment="gravity"
       android:textColor="@color/white"
-      android:textSize="16dp"
+      android:textSize="16sp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent" />
-
   <com.google.android.material.textfield.TextInputLayout
 
       android:id="@+id/skillsSearch"
@@ -31,22 +60,19 @@
 
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginTop="20dp"
-      android:layout_marginStart="12dp"
-      android:layout_marginEnd="12dp"
-      android:hint="Select some skills"
-      android:text="Select some skills"
+      android:layout_marginTop="12dp"
+      android:layout_marginStart="22dp"
+      android:layout_marginEnd="22dp"
+      android:hint="@string/select_some_skills"
+      android:text="@string/select_some_skills"
       android:textColorHint="@color/main_purple"
       app:boxStrokeColor="@color/main_purple"
       app:counterTextColor="@color/main_purple"
       app:helperTextTextColor="@color/main_purple"
       app:hintTextColor="@color/main_purple"
-      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.498"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.213">
+      app:layout_constraintTop_toBottomOf="@id/findExpertText">
 
 
     <AutoCompleteTextView
@@ -60,10 +86,7 @@
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-
-        />
+        android:layout_height="wrap_content" />
   </com.google.android.material.textfield.TextInputLayout>
   <include layout="@layout/toolbar" />
 

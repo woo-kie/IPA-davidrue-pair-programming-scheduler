@@ -1,7 +1,33 @@
 <resources>
   <string name="app_name">Pair Programming Scheduler</string>
-  <string name="title">Network Connectivity Issues</string>
+  <string name="title_network_issues">Network Connectivity Issues</string>
+  <string name="title_error_dialog">Something went wrong</string>
+
   <string name="settings">Go to settings</string>
   <string name="back">Back</string>
-  <string name="supporting_text">Pair Programming Scheduler needs access to the internet to work properly, please go to the settings and switch on the internet. Thank you!</string>
+  <string name="supporting_text">Pair Programming Scheduler needs internet access to work properly, please go to the settings and enable network connectivity. Thank you!</string>
+  <string name="noResultsRemoveSkills">No Results, try removing some skills :)</string>
+  <string name="settings_meeting_title">Meeting Title</string>
+  <string name="settings_meeting_description">Meeting Description</string>
+  <string name="settings_start_of_working_hours">Start of working hours</string>
+  <string name="settings_end_of_working_hours">End of working hours</string>
+  <string name="settings_meeting_duration">Meeting duration</string>
+  <string name="settings_15min">15min</string>
+  <string name="settings_30min">30min</string>
+  <string name="settings_60min">60min</string>
+  <string name="settings_90min">90min</string>
+  <string name="settings_open_in_google_calendar">Open in Google Calendar</string>
+  <string name="settings_logout">Logout</string>
+  <string name="signIn_sign_in">Sign-in</string>
+  <string name="signIn_welcome">Welcome to the worlds best 1:1 Pair Programming Scheduler</string>
+  <string name="select_some_skills">Select some skills</string>
+  <string name="selectSkills_welcome">Select up to 10 skills to find an expert :)</string>
+  <string name="skillSearch_search_experts">Search Experts</string>
+  <string name="select_skills_title">Select Skills</string>
+  <string name="name_google_com">name@google.com</string>
+  <string name="experts_name">Name</string>
+  <string name="toolBarText">Something</string>
+  <string name="meetings_meetingTime">10:00 - 10:30</string>
+  <string name="email">name@google.com</string>
+  <string name="lead">LEAD</string>
 </resources>

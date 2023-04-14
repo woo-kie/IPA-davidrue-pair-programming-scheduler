@@ -2,7 +2,14 @@ package com.davidrue.ipa_davidrue_pair_programming_scheduler.domain;
 
 import java.util.List;
 
+
+/**
+ * Represents an expert with their associated information, including ID, email, name, skills, and lead status.
+ * Is used to parse data between the ui and the data layer.
+ */
 public class Expert {
+
+  // Many fields not used, would be important for future implementation
   private int id;
   private String email;
   private String name;

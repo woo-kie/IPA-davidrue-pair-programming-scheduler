@@ -10,10 +10,14 @@ import com.davidrue.ipa_davidrue_pair_programming_scheduler.R;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.SignInController;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.BaseActivity;
 
+/**
+ The SignInActivity is an activity class responsible for handling the user sign-in process
+ using Google authentication. It displays a sign-in button and initializes the
+ SignInController to manage the sign-in flow and onActivityResult.
+ */
 public class SignInActivity extends BaseActivity {
 
   private SignInController signInController;
-  private TextView loggedState;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +30,11 @@ public class SignInActivity extends BaseActivity {
     Button login = this.findViewById(R.id.btn_login);
 
     login.setOnClickListener(log -> signInController.displaySignIn(this));
-    // MeetingSlotFinder meetingSlotFinder = new MeetingSlotFinder();
-    // login.setOnClickListener(log -> meetingSlotFinder.doSomething());
-
-    loggedState = this.findViewById(R.id.login_state);
   }
 
   @Override
   protected void onResume() {
     super.onResume();
-    //signInController.onResume(this);
-    loggedState.setText("Login State: " + signInController.getUserNameFromSharedPrefs(this));
   }
 
   @Override
@@ -48,7 +46,6 @@ public class SignInActivity extends BaseActivity {
   @Override
   protected void onStart() {
     super.onStart();
-    //signInController.onStart(this);
   }
 
 }

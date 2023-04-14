@@ -1,37 +1,43 @@
 package com.davidrue.ipa_davidrue_pair_programming_scheduler.ui.meetings;
 
-import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.recyclerview.widget.RecyclerView;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.R;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.MeetingSlotFinder;
-import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.MeetingSlotFinder.Duration;
-import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.BaseActivity;
+import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.MeetingSlotsController;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.RecyclerViewInterface;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.ToolBarHelper;
-import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.TimePeriod;
-import java.util.Date;
 
+/**
+ * Activity for displaying and interacting with the available meeting slots for a selected expert.
+ */
 public class MeetingSlotsActivity extends AppCompatActivity implements RecyclerViewInterface {
 
+    private MeetingSlotsController meetingSlotsController = new MeetingSlotsController();
+
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState if the activity is being re-initialized after previously being shut down, this Bundle
+     *                           contains the data it most recently supplied in onSaveInstanceState(Bundle). Note: Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meeting_slots);
-        ProgressBar progressBar = findViewById(R.id.progressBar);
-        String expert = getIntent().getStringExtra("EXPERT");
-        Date now = new Date();
-        Date nextWeek = new Date(now.getTime() + 7 * (1000 * 60 * 60 * 24));
-        RecyclerView recyclerView = findViewById(R.id.meetingsRecyclerView);
-        TimePeriod window = new TimePeriod().setStart(new DateTime(now)).setEnd(new DateTime(nextWeek));
-        MeetingSlotFinder.findAvailableMeetingSlots(this, expert, window, Duration.FIFTEEN, recyclerView, progressBar);
+        meetingSlotsController.initialize(this);
         ToolBarHelper.setUpToolbar(this, "Available Meeting Slots", true, true);
     }
 
+    /**
+     * Called when a meeting slot is clicked in the RecyclerView.
+     *
+     * @param position the position of the clicked meeting slot in the list
+     */
     @Override
     public void onItemClick(int position) {
-
+        TimePeriod time = MeetingSlotFinder.getPosition(position);
+        meetingSlotsController.onClick(time);
     }
 }

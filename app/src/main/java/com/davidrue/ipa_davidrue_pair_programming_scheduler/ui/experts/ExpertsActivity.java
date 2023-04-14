@@ -11,18 +11,21 @@ import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.SkillsAndExpert
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.Expert;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.Skill;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.BaseActivity;
+import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.ErrorDialog;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.ExpertsListCallback;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.RecyclerViewInterface;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.ToolBarHelper;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.ui.meetings.MeetingSlotsActivity;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Displays a list of experts with the required skills, allowing the user to select an expert for a meeting.
+ */
 public class ExpertsActivity extends AppCompatActivity implements RecyclerViewInterface {
-
-  private final SkillsAndExpertsApiController skillsAndExpertsApiController = SkillsAndExpertsApiController.initialize(this);
 
   private List<Expert> expertsWithSkills;
   @Override
@@ -35,8 +38,15 @@ public class ExpertsActivity extends AppCompatActivity implements RecyclerViewIn
     ToolBarHelper.setUpToolbar(this, "Experts", true, true);
   }
 
+  /**
+   * Sets up the list of experts based on the provided skills and populates the recycler view.
+   *
+   * @param activity    the current activity
+   * @param skills      the list of required skills
+   * @param recyclerView the recycler view to be populated with the experts
+   */
   private void setupExperts(ExpertsActivity activity, List<Skill> skills, RecyclerView recyclerView){
-    skillsAndExpertsApiController.getExperts(this, new ExpertsListCallback() {
+    SkillsAndExpertsApiController.getInstance().getExperts(this, new ExpertsListCallback() {
       @Override
       public void onSuccess(List<Expert> expertsResponse) {
         if(!expertsResponse.isEmpty()){
@@ -57,20 +67,23 @@ public class ExpertsActivity extends AppCompatActivity implements RecyclerViewIn
       }
       @Override
       public void onFailure(Exception e) {
-        // Handle the error here
+        ErrorDialog.showError(e, activity);
       }
     });
   }
 
+  /**
+   * Filters the list of experts based on the required skills.
+   *
+   * @param experts        the list of all available experts
+   * @param requiredSkills the list of required skills
+   * @return a list of experts with the required skills
+   */
   public List<Expert> getExpertsWithSkills(List<Expert> experts, List<Skill> requiredSkills) {
     List<Expert> expertsWithSkills = new ArrayList<>();
     List<Integer> requiredSkillIds = requiredSkills.stream().map(Skill::getID).collect(Collectors.toList());
-
-    System.out.println("Required Skill IDs: " + requiredSkillIds); // Debugging: Print the required skill IDs
-
-    for (Expert expert : experts) {// Debugging: Print each expert's skill IDs
-      // Check if the user's skill IDs contain all the required skill IDs
-      if (expert.getSkills().containsAll(requiredSkillIds)) {
+    for (Expert expert : experts) {
+      if (new HashSet<>(expert.getSkills()).containsAll(requiredSkillIds)) {
         expertsWithSkills.add(expert);
       }
     }
@@ -78,6 +91,11 @@ public class ExpertsActivity extends AppCompatActivity implements RecyclerViewIn
     return expertsWithSkills;
   }
 
+  /**
+   * Handles the click event on an expert item, launching the MeetingSlotsActivity with the selected expert's email.
+   *
+   * @param position the position of the clicked expert in the list
+   */
   @Override
   public void onItemClick(int position) {
     Intent intent = new Intent(ExpertsActivity.this, MeetingSlotsActivity.class);

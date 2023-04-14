@@ -17,6 +17,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * RecyclerViewAdapter for displaying and interacting with the available meeting slots for a given expert.
+ */
 public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRecyclerViewAdapter.MyViewHolder> {
 
   private final RecyclerViewInterface recyclerViewInterface;
@@ -27,7 +30,13 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
   SimpleDateFormat hoursFormat = new SimpleDateFormat("HH:mm");
   SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM yyyy");
 
-
+  /**
+   * Constructor for MeetingsRecyclerViewAdapter.
+   *
+   * @param context               the context where the RecyclerView is used
+   * @param meetings              the list of meeting slots to be displayed
+   * @param recyclerViewInterface the interface used for handling click events
+   */
   public MeetingsRecyclerViewAdapter(Context context, List<TimePeriod> meetings, RecyclerViewInterface recyclerViewInterface) {
     this.context = context;
     this.meetings = meetings;
@@ -63,12 +72,20 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
     return meetings.size();
   }
 
+  /**
+   * ViewHolder class for meeting slots.
+   */
   public static class MyViewHolder extends RecyclerView.ViewHolder{
 
     ImageView meetingIcon;
     TextView time, date;
 
-
+    /**
+     * Constructor for MyViewHolder.
+     *
+     * @param itemView              the view used for a meeting slot
+     * @param recyclerViewInterface the interface used for handling click events
+     */
     public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
       super(itemView);
 
@@ -76,14 +93,12 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
       time = itemView.findViewById(R.id.time);
       date = itemView.findViewById(R.id.date);
 
-      itemView.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-          if (recyclerViewInterface != null){
-            int position = getAdapterPosition();
-            if (position != RecyclerView.NO_POSITION){
-              recyclerViewInterface.onItemClick(position);
-            }
+      itemView.setOnClickListener(v -> {
+        if (recyclerViewInterface != null){
+          int position = getAdapterPosition();
+          // Check that position is valid
+          if (position != RecyclerView.NO_POSITION){
+            recyclerViewInterface.onItemClick(position);
           }
         }
       });

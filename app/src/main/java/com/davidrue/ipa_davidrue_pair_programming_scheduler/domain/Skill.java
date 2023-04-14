@@ -6,7 +6,13 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a skill with its associated information, including ID, name, type, and the list of users (experts) who possess the skill.
+ * Is used to parse data between the ui and the data layer.
+ */
 public class Skill implements Parcelable {
+
+  // Many fields not used, would be important for future implementation
   private int id;
   private String name;
   private String type;

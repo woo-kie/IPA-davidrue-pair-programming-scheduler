@@ -10,6 +10,7 @@ import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.SkillsAndExpert
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.databinding.ActivitySkillSearchBinding;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.Skill;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.BaseActivity;
+import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.ErrorDialog;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.SkillsListCallback;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.ToolBarHelper;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.ui.experts.ExpertsActivity;
@@ -19,8 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ SkillSearchActivity is an activity class responsible for displaying a skill search interface
+ to the user. It fetches a list of skills from the API and allows the user to select skills
+ by adding chips to a ChipGroup. Users can then search for experts based on their selected skills.
+ The activity navigates to ExpertsActivity to display the search results.
+ */
 public class SkillSearchActivity extends BaseActivity {
-  private final SkillsAndExpertsApiController skillsAndExpertsApiController = SkillsAndExpertsApiController.initialize(this);
   private List<Skill> selectedSkills = new ArrayList<>();
   private ActivitySkillSearchBinding binding;
 
@@ -35,22 +41,30 @@ public class SkillSearchActivity extends BaseActivity {
     ToolBarHelper.setUpToolbar(this, "Select Skills", false, true);
   }
 
+  /**
+   Sets up the skill search functionality by fetching the list of skills from the API and
+   initializing the adapter.
+   */
   private void setUpSkillSearch(){
-    skillsAndExpertsApiController.getSkills(this, new SkillsListCallback() {
+    SkillsAndExpertsApiController.getInstance().getSkills(this, new SkillsListCallback() {
       @Override
       public void onSuccess(List<Skill> skillsResponse) {
         initializeAdapter(skillsResponse);
       }
       @Override
       public void onFailure(Exception e) {
-        // Handle the error here
+        ErrorDialog.showError(e, SkillSearchActivity.this);
       }
     });
   }
 
+  /**
+   Initializes the ArrayAdapter with the fetched skills and sets up an item click listener
+   for the AutoCompleteTextView.
+   */
   private void initializeAdapter(List<Skill> skills){
     List<String> skillsAsString = skills.stream().map(Skill::getName).sorted().collect(Collectors.toList());
-    ArrayAdapter adapter = new ArrayAdapter(this, R.layout.item_drop_down, skillsAsString);
+    ArrayAdapter adapter = new ArrayAdapter(this, R.layout.dropdown_menu_item, skillsAsString);
     binding.autoCompleteSkills.setAdapter(adapter);
     binding.autoCompleteSkills.setOnItemClickListener((parent, view, position, id) -> {
       String selectedSkill = (String) parent.getItemAtPosition(position);
@@ -63,11 +77,11 @@ public class SkillSearchActivity extends BaseActivity {
         addSkillChip(selectedSkill, skills);
         binding.autoCompleteSkills.setText("");
       }
-
     });
   }
 
   private void addSkillChip(String selectedSkill, List<Skill> skills){
+    // Add skill to the list of required skills.
     Skill matchingSkill = findSkill(selectedSkill, skills);
     selectedSkills.add(matchingSkill);
     updateSearchButton();
@@ -75,9 +89,11 @@ public class SkillSearchActivity extends BaseActivity {
   }
 
   private Chip getChip(Skill skill){
+    // Creates a Chip for the Chip Group using the Skill.
     Chip chip = new Chip(this);
     chip.setText(skill.getName());
     chip.setCloseIconVisible(true);
+    chip.setClickable(false);
     chip.setCloseIcon(getResources().getDrawable(R.drawable.baseline_close_24));
     chip.setTextSize(14);
     chip.setChipBackgroundColorResource(R.color.main_pink);
@@ -100,10 +116,7 @@ public class SkillSearchActivity extends BaseActivity {
       }
     }
 
-    if (foundSkill != null) {
-      return foundSkill;
-    }
-    return null;
+    return foundSkill;
   }
 
   private void updateSearchButton(){
@@ -117,12 +130,7 @@ public class SkillSearchActivity extends BaseActivity {
       intent.putParcelableArrayListExtra("SKILLS", new ArrayList<>(selectedSkills));
       startActivity(intent);
     }else{
-      Toast.makeText(this, "I do not understand how you got here :(", Toast.LENGTH_LONG).show();
+      Toast.makeText(this, "Check Internet Connection...", Toast.LENGTH_LONG).show();
     }
-  }
-
-  @Override
-  public void onBackPressed() {
-    System.exit(1);
   }
 }
