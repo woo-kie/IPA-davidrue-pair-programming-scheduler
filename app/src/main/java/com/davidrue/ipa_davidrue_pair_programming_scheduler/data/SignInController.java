@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import androidx.annotation.Nullable;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.BuildConfig;
@@ -13,13 +15,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.calendar.CalendarScopes;
+import java.util.Collections;
+import java.util.Objects;
 
 public class SignInController {
 
@@ -53,6 +61,8 @@ public class SignInController {
         .build();
 
     googleSignInClient = GoogleSignIn.getClient(activity, googleSignInOptions);
+
+    AuthorizationController.getInstance().initialize(activity);
   }
 
   public void displaySignIn(Activity activity){
@@ -78,11 +88,8 @@ public class SignInController {
   private void handleSignInResult(Task<GoogleSignInAccount> completedTask, Activity activity) {
     try {
       GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-      Log.d(TAG, account.getAccount().name);
-
       writeUserNameToSharedPrefs(account, activity);
-      Log.d(TAG, account.getGrantedScopes().toString());
-
+      AuthorizationController.getInstance().initializeCalendarService(account);
       activity.startActivity(new Intent(activity, SkillSearchActivity.class));
 
     } catch (ApiException e) {
@@ -129,9 +136,64 @@ public class SignInController {
   public static String getUserNameFromSharedPrefs(Activity activity) {
     SharedPreferences sharedPreferences = activity.getSharedPreferences("LOGGED_IN_USER",
         Context.MODE_PRIVATE);
-    String result = sharedPreferences.getString("userId", "Not Found");
 
-    return result;
+    return sharedPreferences.getString("userId", "Not Found");
   }
 
+  public static GoogleSignInAccount getSignedInAccount(Activity activity) {
+    if (isSignedIn(activity)) {
+      return GoogleSignIn.getLastSignedInAccount(activity);
+    } else {
+      return null;
+    }
+  }
+
+  public void recursiveLogin(Activity activity){
+    if (isSignedIn(activity)) {
+      String savedEmail = getUserNameFromSharedPrefs(activity);
+      if (!savedEmail.equals("Not Found")) {
+        // Attempt to sign in the user automatically
+        googleSignInClient.silentSignIn()
+            .addOnSuccessListener(activity, googleSignInAccount -> {
+              // Handle successful silent sign-in
+              AuthorizationController.getInstance().maybeInitCalendarService(googleSignInAccount);
+              if (activity instanceof SignInActivity) {
+                activity.startActivity(new Intent(activity, SkillSearchActivity.class));
+              }
+            })
+            .addOnFailureListener(activity, e -> {
+              // Handle failed silent sign-in
+              logout(activity);
+            });
+      } else {
+        // If no saved user, then log out and go to the SignInActivity
+        logout(activity);
+      }
+    }
+  }
+
+  public static boolean isSignedIn(Activity activity) {
+    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(activity);
+    if (account != null) {
+      if (Objects.equals(account.getEmail(), getUserNameFromSharedPrefs(activity))) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  public boolean isNetworkAvailable(Activity activity) {
+    ConnectivityManager connectivityManager
+        = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetworkInfo =
+        connectivityManager != null ? connectivityManager.getActiveNetworkInfo() : null;
+    GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+    int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(activity);
+
+    return activeNetworkInfo != null && activeNetworkInfo.isConnected()
+        && resultCode == ConnectionResult.SUCCESS;
+  }
 }

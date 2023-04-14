@@ -1,11 +1,10 @@
 package com.davidrue.ipa_davidrue_pair_programming_scheduler.data;
 
 import android.app.Activity;
-import android.util.Log;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.Expert;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.Skill;
-import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.callbacks.ExpertsListCallback;
-import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.callbacks.SkillsListCallback;
+import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.ExpertsListCallback;
+import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.SkillsListCallback;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import java.io.IOException;

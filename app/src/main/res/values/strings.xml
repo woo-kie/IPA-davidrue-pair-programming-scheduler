@@ -1,3 +1,7 @@
 <resources>
   <string name="app_name">Pair Programming Scheduler</string>
+  <string name="title">Network Connectivity Issues</string>
+  <string name="settings">Go to settings</string>
+  <string name="back">Back</string>
+  <string name="supporting_text">Pair Programming Scheduler needs access to the internet to work properly, please go to the settings and switch on the internet. Thank you!</string>
 </resources>

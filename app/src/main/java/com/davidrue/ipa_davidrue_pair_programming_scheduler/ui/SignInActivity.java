@@ -8,8 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.R;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.SignInController;
+import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.BaseActivity;
 
-public class SignInActivity extends AppCompatActivity {
+public class SignInActivity extends BaseActivity {
 
   private SignInController signInController;
   private TextView loggedState;
@@ -18,7 +19,6 @@ public class SignInActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_sign_in);
-    getSupportActionBar().hide();
 
     signInController = SignInController.getInstance();
     signInController.initialize(this);

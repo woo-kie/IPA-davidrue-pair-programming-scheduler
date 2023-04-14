@@ -6,11 +6,12 @@
     android:layout_height="wrap_content"
     tools:context=".ui.experts.ExpertsActivity">
 
+
   <androidx.cardview.widget.CardView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="15dp"
-      android:layout_marginBottom="10dp"
+      android:layout_marginBottom="15dp"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
       app:cardBackgroundColor="@color/light_pink"
@@ -26,61 +27,43 @@
         android:layout_height="match_parent">
 
       <ImageView
-          android:id="@+id/personIcon"
-          android:layout_width="48dp"
-          android:layout_height="48dp"
+          android:id="@+id/meetingIcon"
+          android:layout_width="40dp"
+          android:layout_height="40dp"
           android:layout_marginStart="10dp"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintStart_toStartOf="parent"
 
           app:layout_constraintTop_toTopOf="parent"
-          app:srcCompat="@drawable/baseline_person_outline_24" />
+          app:srcCompat="@drawable/baseline_today_24" />
 
       <TextView
-          android:id="@+id/name"
+          android:id="@+id/time"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginTop="4dp"
-          android:layout_marginStart="6dp"
-          android:text="Name"
-          android:textSize="18dp"
+          android:layout_marginTop="15dp"
           android:textStyle="bold"
-          app:layout_constraintStart_toEndOf="@+id/personIcon"
+          android:layout_marginStart="10dp"
+          android:text="10:00 - 10:30"
+          android:textSize="20dp"
+          app:layout_constraintStart_toEndOf="@+id/meetingIcon"
           app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-          android:id="@+id/email"
+          android:id="@+id/date"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginStart="6dp"
-          android:text="name@google.com"
-          android:textSize="12dp"
           android:layout_marginTop="2dp"
+          android:layout_marginBottom="15dp"
+          android:layout_marginStart="10dp"
+          android:text="name@google.com"
+          android:textSize="16sp"
           app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toStartOf="@+id/lead"
-          app:layout_constraintHorizontal_bias="0.0"
-          app:layout_constraintStart_toEndOf="@+id/personIcon"
-          app:layout_constraintTop_toBottomOf="@id/name"
+          app:layout_constraintStart_toEndOf="@+id/meetingIcon"
+          app:layout_constraintTop_toBottomOf="@id/time"
           app:layout_constraintVertical_bias="0.0" />
-      <com.google.android.material.chip.Chip
-          android:id="@+id/lead"
-          android:theme="@style/Widget.Material3.Chip.Input.Icon.Elevated"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="5dp"
-          android:layout_marginBottom="5dp"
-          android:layout_marginEnd="12dp"
-          app:chipBackgroundColor="@android:color/transparent"
-          app:chipIcon="@drawable/baseline_star_outline_24"
-          app:layout_constraintBottom_toBottomOf="parent"
-          android:text="LEAD"
-          android:clickable="false"
-          android:textStyle="bold"
-          android:textColor="@color/main_purple"
-          app:layout_constraintEnd_toEndOf="parent"
-          android:visibility="invisible"
-          app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
   </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.davidrue.ipa_davidrue_pair_programming_scheduler.ui;
+package com.davidrue.ipa_davidrue_pair_programming_scheduler.ui.experts;
 
 
 import android.content.Context;
@@ -11,16 +11,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.R;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.Expert;
+import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.RecyclerViewInterface;
 import com.google.android.material.chip.Chip;
 import java.util.List;
 
 public class ExpertsRecyclerViewAdapter extends RecyclerView.Adapter<ExpertsRecyclerViewAdapter.MyViewHolder> {
+
+  private final RecyclerViewInterface recyclerViewInterface;
+
   Context context;
   List<Expert> experts;
 
-  public ExpertsRecyclerViewAdapter(Context context, List<Expert> experts) {
+  public ExpertsRecyclerViewAdapter(Context context, List<Expert> experts, RecyclerViewInterface recyclerViewInterface) {
     this.context = context;
     this.experts = experts;
+    this.recyclerViewInterface = recyclerViewInterface;
   }
 
   @NonNull
@@ -30,14 +35,12 @@ public class ExpertsRecyclerViewAdapter extends RecyclerView.Adapter<ExpertsRecy
     LayoutInflater inflater = LayoutInflater.from(context);
     View view = inflater.inflate(R.layout.expert_row, parent, false);
 
-    return new ExpertsRecyclerViewAdapter.MyViewHolder(view);
+    return new ExpertsRecyclerViewAdapter.MyViewHolder(view, recyclerViewInterface);
   }
 
   @Override
   public void onBindViewHolder(@NonNull ExpertsRecyclerViewAdapter.MyViewHolder holder,
       int position) {
-
-    System.out.println("DAVID IS THE BEST!!!!!");
     holder.name.setText(experts.get(position).getName());
     holder.email.setText(experts.get(position).getEmail());
     holder.lead.setVisibility(experts.get(position).isLead() ? View.VISIBLE : View.INVISIBLE);
@@ -55,13 +58,25 @@ public class ExpertsRecyclerViewAdapter extends RecyclerView.Adapter<ExpertsRecy
     Chip lead;
 
 
-    public MyViewHolder(@NonNull View itemView) {
+    public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
       super(itemView);
 
       personIcon = itemView.findViewById(R.id.personIcon);
       name = itemView.findViewById(R.id.name);
       email = itemView.findViewById(R.id.email);
       lead = itemView.findViewById(R.id.lead);
+
+      itemView.setOnClickListener(new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+          if (recyclerViewInterface != null){
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION){
+              recyclerViewInterface.onItemClick(position);
+            }
+          }
+        }
+      });
     }
   }
 }

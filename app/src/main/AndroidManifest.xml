@@ -13,7 +13,16 @@
       android:theme="@style/Theme.IPAdavidruepairprogrammingscheduler"
       tools:targetApi="31">
     <activity
-        android:name=".ui.ExpertsActivity"
+        android:name=".domain.helpers.BaseActivity"
+        android:exported="false" />
+    <activity
+        android:name=".ui.SettingsActivity"
+        android:exported="false" />
+    <activity
+        android:name=".ui.meetings.MeetingSlotsActivity"
+        android:exported="false" />
+    <activity
+        android:name=".ui.experts.ExpertsActivity"
         android:exported="false" />
     <activity
         android:name=".ui.SkillSearchActivity"
