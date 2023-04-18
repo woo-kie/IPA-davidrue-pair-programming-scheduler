@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 /**
  * Displays a list of experts with the required skills, allowing the user to select an expert for a meeting.
  */
-public class ExpertsActivity extends AppCompatActivity implements RecyclerViewInterface {
+public class ExpertsActivity extends BaseActivity implements RecyclerViewInterface {
 
   private List<Expert> expertsWithSkills;
   @Override

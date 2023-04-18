@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.R;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.MeetingSlotFinder;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.MeetingSlotsController;
+import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.BaseActivity;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.RecyclerViewInterface;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.ToolBarHelper;
 import com.google.api.services.calendar.model.TimePeriod;
@@ -12,7 +13,7 @@ import com.google.api.services.calendar.model.TimePeriod;
 /**
  * Activity for displaying and interacting with the available meeting slots for a selected expert.
  */
-public class MeetingSlotsActivity extends AppCompatActivity implements RecyclerViewInterface {
+public class MeetingSlotsActivity extends BaseActivity implements RecyclerViewInterface {
 
     private MeetingSlotsController meetingSlotsController = new MeetingSlotsController();
 
