@@ -2,7 +2,6 @@ package com.davidrue.ipa_davidrue_pair_programming_scheduler.ui;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
-import androidx.appcompat.app.AppCompatActivity;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.R;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.MeetingSlotFinder.Duration;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.SettingsController;
@@ -20,21 +19,17 @@ import com.google.android.material.textfield.TextInputEditText;
      * whether to open the meeting in Google Calendar.
     */
 public class SettingsActivity extends BaseActivity {
-  private TextInputEditText mMeetingTitleInput;
-  private TextInputEditText mMeetingDescriptionInput;
+  private TextInputEditText meetingTitleInput;
+  private TextInputEditText meetingDescriptionInput;
 
-  private MaterialAutoCompleteTextView mStartTimeDropdown;
-  private MaterialAutoCompleteTextView mEndTimeDropdown;
+  private MaterialAutoCompleteTextView startTimeDropdown;
+  private MaterialAutoCompleteTextView endTimeDropdown;
 
   private SettingsController settingsController;
 
-  private MaterialButtonToggleGroup mDurationToggleGroup;
-  private MaterialButton mButtonFifteen;
-  private MaterialButton mButtonThirty;
-  private MaterialButton mButtonSixty;
-  private MaterialButton mButtonNinety;
+  private MaterialButtonToggleGroup durationToggleGroup;
 
-  private SwitchMaterial mOpenInGoogleCalendarSwitch;
+  private SwitchMaterial openInGoogleCalendarSwitch;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -46,40 +41,37 @@ public class SettingsActivity extends BaseActivity {
     MaterialButton logout = findViewById(R.id.logout);
 
     // Initialize the input fields
-    mMeetingTitleInput = findViewById(R.id.meeting_title_input);
-    mMeetingDescriptionInput = findViewById(R.id.meeting_description_input);
-    mDurationToggleGroup = findViewById(R.id.duration_toggle_group);
-    mButtonFifteen = findViewById(R.id.fifteenButton);
-    mButtonThirty = findViewById(R.id.thirtyButton);
-    mButtonSixty = findViewById(R.id.hourButton);
-    mButtonNinety = findViewById(R.id.ninetyButton);
+    meetingTitleInput = findViewById(R.id.meeting_title_input);
+    meetingDescriptionInput = findViewById(R.id.meeting_description_input);
+    durationToggleGroup = findViewById(R.id.duration_toggle_group);
+
 
     // Set the initial values for the input fields
-    mMeetingTitleInput.setText(settingsController.getMeetingTitleFromSharedPrefs());
-    mMeetingDescriptionInput.setText(settingsController.getMeetingDescriptionFromSharedPrefs());
+    meetingTitleInput.setText(settingsController.getMeetingTitleFromSharedPrefs());
+    meetingDescriptionInput.setText(settingsController.getMeetingDescriptionFromSharedPrefs());
 
 
-    mStartTimeDropdown = findViewById(R.id.start_time_dropdown);
-    mEndTimeDropdown = findViewById(R.id.end_time_dropdown);
+    startTimeDropdown = findViewById(R.id.start_time_dropdown);
+    endTimeDropdown = findViewById(R.id.end_time_dropdown);
 
     // Set up the ArrayAdapter and populate the dropdowns
     ArrayAdapter<CharSequence> startTimeAdapter = ArrayAdapter.createFromResource(this, R.array.start_times, R.layout.dropdown_menu_item);
     startTimeAdapter.setDropDownViewResource(R.layout.dropdown_menu_item);
-    mStartTimeDropdown.setAdapter(startTimeAdapter);
+    startTimeDropdown.setAdapter(startTimeAdapter);
 
     ArrayAdapter<CharSequence> endTimeAdapter = ArrayAdapter.createFromResource(this, R.array.end_times, R.layout.dropdown_menu_item);
     endTimeAdapter.setDropDownViewResource(R.layout.dropdown_menu_item);
-    mEndTimeDropdown.setAdapter(endTimeAdapter);
+    endTimeDropdown.setAdapter(endTimeAdapter);
 
     // Set the initial values for the dropdowns
-    mStartTimeDropdown.setText(settingsController.getMeetingStartTimeFromSharedPrefs(), false);
-    mEndTimeDropdown.setText(settingsController.getMeetingEndTimeFromSharedPrefs(), false);
+    startTimeDropdown.setText(settingsController.getMeetingStartTimeFromSharedPrefs(), false);
+    endTimeDropdown.setText(settingsController.getMeetingEndTimeFromSharedPrefs(), false);
     setDurationToggleSelection(Duration.valueOf(settingsController.getMeetingDurationFromSharedPrefs()));
 
-    mOpenInGoogleCalendarSwitch = findViewById(R.id.switch_open_in_google_calendar);
-    mOpenInGoogleCalendarSwitch.setChecked(settingsController.getOpenInGoogleCalendarFromSharedPrefs());
+    openInGoogleCalendarSwitch = findViewById(R.id.switch_open_in_google_calendar);
+    openInGoogleCalendarSwitch.setChecked(settingsController.getOpenInGoogleCalendarFromSharedPrefs());
 
-    mOpenInGoogleCalendarSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+    openInGoogleCalendarSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
       settingsController.writeOpenInGoogleCalendarToSharedPrefs(isChecked);
     });
 
@@ -88,7 +80,7 @@ public class SettingsActivity extends BaseActivity {
       SignInController.getInstance().logout(this);
     });
 
-    mDurationToggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+    durationToggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
       if (isChecked) {
         switch (checkedId) {
           case R.id.fifteenButton:
@@ -130,25 +122,25 @@ public class SettingsActivity extends BaseActivity {
   private void setDurationToggleSelection(Duration duration) {
     switch (duration) {
       case FIFTEEN:
-        mDurationToggleGroup.check(R.id.fifteenButton);
+        durationToggleGroup.check(R.id.fifteenButton);
         break;
       case THIRTY:
-        mDurationToggleGroup.check(R.id.thirtyButton);
+        durationToggleGroup.check(R.id.thirtyButton);
         break;
       case HOUR:
-        mDurationToggleGroup.check(R.id.hourButton);
+        durationToggleGroup.check(R.id.hourButton);
         break;
       case NINETY:
-        mDurationToggleGroup.check(R.id.ninetyButton);
+        durationToggleGroup.check(R.id.ninetyButton);
         break;
     }
   }
   private void saveInputs() {
     // Save the input fields' values
-    String meetingTitle = mMeetingTitleInput.getText().toString();
-    String meetingDescription = mMeetingDescriptionInput.getText().toString();
-    String meetingStartTime = mStartTimeDropdown.getText().toString();
-    String meetingEndTime = mEndTimeDropdown.getText().toString();
+    String meetingTitle = meetingTitleInput.getText().toString();
+    String meetingDescription = meetingDescriptionInput.getText().toString();
+    String meetingStartTime = startTimeDropdown.getText().toString();
+    String meetingEndTime = endTimeDropdown.getText().toString();
     settingsController.writeMeetingTitleToSharedPrefs(meetingTitle);
     settingsController.writeMeetingDescriptionToSharedPrefs(meetingDescription);
     settingsController.writeMeetingStartTimeToSharedPrefs(meetingStartTime);
@@ -156,7 +148,7 @@ public class SettingsActivity extends BaseActivity {
   }
 
   private void saveDurationToggleGroupState() {
-    int checkedId = mDurationToggleGroup.getCheckedButtonId();
+    int checkedId = durationToggleGroup.getCheckedButtonId();
     switch (checkedId) {
       case R.id.fifteenButton:
         settingsController.writeMeetingDurationToSharedPrefs(Duration.FIFTEEN);

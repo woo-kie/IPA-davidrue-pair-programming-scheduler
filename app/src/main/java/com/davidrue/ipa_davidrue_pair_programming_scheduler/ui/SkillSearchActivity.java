@@ -3,7 +3,6 @@ package com.davidrue.ipa_davidrue_pair_programming_scheduler.ui;
 import android.content.Intent;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.R;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.data.SkillsAndExpertsApiController;
@@ -22,8 +21,8 @@ import java.util.stream.Collectors;
 
 /**
  SkillSearchActivity is an activity class responsible for displaying a skill search interface
- to the user. It fetches a list of skills from the API and allows the user to select skills
- by adding chips to a ChipGroup. Users can then search for experts based on their selected skills.
+ to the user. It fetches a list of skills from the API and allows the user to select skills.
+ Users can then search for experts based on their selected skills.
  The activity navigates to ExpertsActivity to display the search results.
  */
 public class SkillSearchActivity extends BaseActivity {

@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 
 /**
  * The MeetingSlotFinder class helps users find available meeting slots
- * for pair programming sessions with the selected experts.
+ * for pair programming sessions with the selected expert.
  */
 public class MeetingSlotFinder {
 
