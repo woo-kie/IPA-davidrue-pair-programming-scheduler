@@ -111,11 +111,8 @@ public class AuthorizationController {
     if (credential == null) {
       return false;
     }
-    if (credential.getSelectedAccount() != null
-        || GoogleSignIn.hasPermissions(SignInController.getSignedInAccount(activity), new Scope(SCOPES))) {
-      return true;
-    } else {
-      return false;
-    }
+    return credential.getSelectedAccount() != null
+        || GoogleSignIn.hasPermissions(SignInController.getSignedInAccount(activity),
+        new Scope(SCOPES));
   }
 }

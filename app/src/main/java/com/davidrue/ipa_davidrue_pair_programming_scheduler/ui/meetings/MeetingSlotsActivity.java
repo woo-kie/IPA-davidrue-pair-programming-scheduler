@@ -15,7 +15,7 @@ import com.google.api.services.calendar.model.TimePeriod;
  */
 public class MeetingSlotsActivity extends BaseActivity implements RecyclerViewInterface {
 
-    private MeetingSlotsController meetingSlotsController = new MeetingSlotsController();
+    private final MeetingSlotsController meetingSlotsController = new MeetingSlotsController();
 
     /**
      * Called when the activity is starting.

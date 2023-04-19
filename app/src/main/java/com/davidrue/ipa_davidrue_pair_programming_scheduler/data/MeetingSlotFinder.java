@@ -174,8 +174,6 @@ public class MeetingSlotFinder {
         freeSlots -> getMeetingSlotsOfDuration(freeSlots, duration), getExecutor());
   }
 
-
-
   /**
    * Transforms a list of busy time slots into a list of free time slots.
    *
@@ -281,7 +279,6 @@ public class MeetingSlotFinder {
         .toInstant()
         .toEpochMilli();
   }
-
 
   private static List<State> labelSlotsAsFreeBusy(List<Long> timeSlots,
       List<TimePeriod> busyTimePeriods) {

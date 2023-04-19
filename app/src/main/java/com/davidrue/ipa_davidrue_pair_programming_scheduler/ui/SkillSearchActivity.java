@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  The activity navigates to ExpertsActivity to display the search results.
  */
 public class SkillSearchActivity extends BaseActivity {
-  private List<Skill> selectedSkills = new ArrayList<>();
+  private final List<Skill> selectedSkills = new ArrayList<>();
   private ActivitySkillSearchBinding binding;
 
   @Override
