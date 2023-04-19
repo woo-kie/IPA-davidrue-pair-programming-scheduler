@@ -7,6 +7,7 @@
   <string name="back">Back</string>
   <string name="supporting_text">Pair Programming Scheduler needs internet access to work properly, please go to the settings and enable network connectivity. Thank you!</string>
   <string name="noResultsRemoveSkills">No Results, try removing some skills :)</string>
+  <string name="noResultsMeetings">No Results for the next week, please make sure access to Google Calendar is granted</string>
   <string name="settings_meeting_title">Meeting Title</string>
   <string name="settings_meeting_description">Meeting Description</string>
   <string name="settings_start_of_working_hours">Start of working hours</string>

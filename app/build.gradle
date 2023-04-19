@@ -3,6 +3,13 @@ plugins {
 }
 
 android {
+    configurations.all {
+        resolutionStrategy {
+            force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10"
+            force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10"
+        }
+    }
+
     namespace 'com.davidrue.ipa_davidrue_pair_programming_scheduler'
     compileSdk 33
 
@@ -47,7 +54,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'

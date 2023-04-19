@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.davidrue.ipa_davidrue_pair_programming_scheduler.R;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.domain.helpers.ErrorDialog;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.ui.meetings.MeetingSlotsActivity;
 import com.davidrue.ipa_davidrue_pair_programming_scheduler.ui.meetings.MeetingsRecyclerViewAdapter;
@@ -59,7 +60,6 @@ public class MeetingSlotFinder {
       RecyclerView recyclerView,
       ProgressBar progressBar) {
 
-
     settingsController = new SettingsController(activity);
     // Shows the "loading"-icon until the asynchronous tasks are done.
     activity.runOnUiThread(() -> progressBar.setVisibility(View.VISIBLE));
@@ -94,10 +94,16 @@ public class MeetingSlotFinder {
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(activity));
             progressBar.setVisibility(View.GONE);
+            if(adapter.getItemCount() == 0){
+              activity.findViewById(R.id.meetings_no_results).setVisibility(View.VISIBLE);
+            }
           });
 
         } catch (Exception e) {
-          ErrorDialog.showError(e, activity);
+          activity.runOnUiThread(()->{
+            progressBar.setVisibility(View.GONE);
+            activity.findViewById(R.id.meetings_no_results).setVisibility(View.VISIBLE);
+          });
         }
       }
     }, getExecutor());
